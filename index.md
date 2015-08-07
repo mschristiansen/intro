@@ -257,6 +257,9 @@ be pure again.
 Think of it as a special type that you wrap and unwrap.
 
 ```
+> Int -> Int               -- Pure: Always same output for same input
+> Int -> IO Int            -- Impure: Hard to test or reason about.
+
 > main :: IO ()
 > main = do                -- Do syntax for sequencing side effects.
 >  print "Hello World"     -- Always from top to bottom.

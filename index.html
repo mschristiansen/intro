@@ -219,7 +219,10 @@ Prelude&gt; _</code></pre>
 <h1>Side Effects</h1>
 <p>Side effects only happens in the IO Monad. Once impure you can never be pure again.</p>
 <p>Think of it as a special type that you wrap and unwrap.</p>
-<pre><code>&gt; main :: IO ()
+<pre><code>&gt; Int -&gt; Int               -- Pure: Always same output for same input
+&gt; Int -&gt; IO Int            -- Impure: Hard to test or reason about.
+
+&gt; main :: IO ()
 &gt; main = do                -- Do syntax for sequencing side effects.
 &gt;  print &quot;Hello World&quot;     -- Always from top to bottom.
 &gt;  print &quot;Good Morning!&quot;
