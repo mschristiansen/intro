@@ -69,34 +69,47 @@
 </ul>
 </section><section id="install-tools" class="slide level2">
 <h1>Install Tools</h1>
-<p>Get compiler: ghc Get build manager: cabal (cabal-install)</p>
-<p>On Debian/Ubuntu it can be done with: <code>apt-get install git ghc cabal-install</code></p>
+<p>Version control: git (optional)</p>
+<p>Get compiler: ghc</p>
+<p>Get build manager: cabal || cabal-install</p>
+<p>On Debian/Ubuntu it can be done with:</p>
+<pre><code>sudo apt-get install git ghc cabal-install</code></pre>
 </section><section id="download-project" class="slide level2">
 <h1>Download Project</h1>
 <p>Clone repository and tell <code>cabal</code> to start fetching dependencies.</p>
 <pre><code>$ git clone git@github.com:mschristiansen/intro.git
 $ cd intro
 $ cabal sandbox init
-$ cabal install --dependencies-only --enable-tests</code></pre>
-</section><section id="project-structure" class="slide level2">
-<h1>Project Structure</h1>
+$ cabal install --dependencies-only --enable-tests
+$ cabal test
+$ cabal run</code></pre>
 </section></section>
 <section><section id="haskell-tools" class="titleslide slide level1"><h1>Haskell Tools</h1></section><section id="using-cabal" class="slide level2">
 <h1>Using Cabal</h1>
 <p>Cabal is a build manager that handles library dependencies.</p>
 <p>Our project is defined in <code>intro.cabal</code>.</p>
-</section><section id="intro.cabal" class="slide level2">
-<h1>intro.cabal</h1>
+<p>Let's have a look...</p>
 </section><section id="using-ghci" class="slide level2">
 <h1>Using GHCi</h1>
-<p>You can start an interactive prompt (aka. REPL, READ-EVAL-PRINT-LOOP). It has tab completion and can be used to evaluate expressions and find types.</p>
+<p>GHC interactive. A Haskell REPL.</p>
 <pre><code>$ ghci
-</code></pre>
-<p>In a project you can do it like this:</p>
+GHCi, version 7.10.1: http://www.haskell.org/ghc/  :? for help
+Prelude&gt; _</code></pre>
+<p>In a project you can import all the project dependencies if you do it like this:</p>
 <pre><code>$ cabal repl
 </code></pre>
 </section><section id="ghci-commands" class="slide level2">
 <h1>GHCi Commands</h1>
+<p>GHCi will try to evaluate expressions not starting with colon.</p>
+<pre><code>&gt; 2 + 2                     -- evaluates to 4
+&gt; let square x = x * x      -- define that two expressions are equivalent
+&gt; square 2                  -- square 2 = 2 * 2
+&gt; :?                        -- display help
+&gt; :t &#39;a&#39;                    -- to get type information about character &#39;a&#39;
+&gt; :l Intro                  -- to load module Intro
+&gt; :m +Data.List             -- import module Data.List
+&gt; :set -XOverloadedStrings  -- enable language extension
+&gt; :q                        -- to quit</code></pre>
 </section></section>
 <section><section id="syntax" class="titleslide slide level1"><h1>Syntax</h1></section><section id="basic-syntax" class="slide level2">
 <h1>Basic Syntax</h1>
@@ -104,34 +117,97 @@ $ cabal install --dependencies-only --enable-tests</code></pre>
 &gt; print &quot;Hello World!&quot;
 &gt; length &quot;Hello World&quot;
 &gt; let hello = &quot;Hello World&quot; in print hello
-&gt; 1 + 3 * 3
-&gt; (1 + 3) * 3
-&gt; 1 + 3 $ * 4
-&gt; (+) 1 3
-&gt; (+ 1) 3
-</code></pre>
+&gt; 1 + 3 * 3                               -- infix notation
+&gt; (1 + 3) * 3                             -- precedence
+&gt; 1 + 3 $ * 4                             -- &#39;$&#39; instead of parenthesis
+&gt; (+) 1 3                                 -- prefix an infix fn
+&gt; (+ 1) 3                                 -- partial application
+&gt; let { x = a + b where a = 1; b=2 } in x -- semicolon and brackets
+&gt; let add a b = a + b                     -- define prefix addition
+&gt; let add1 a b = (+) a b                  -- f(x,y) = g(x,y) &lt;=&gt; f = g
+&gt; let add2 = (+)
+&gt; add 3 4
+&gt; 3 `add` 4                               -- infix a prefix fn
+&gt; let inc = \i -&gt; i + 1                   -- lambda fn
+&gt; let triple = \x y z -&gt; (x,y,z)          ---lambda with multiple args</code></pre>
 </section><section id="list-syntax" class="slide level2">
 <h1>List Syntax</h1>
-<pre><code>&gt; [1, 3, 4, 5]
-&gt; [1..10]
-&gt; let integers = [1..]
-&gt; take 10 integers
-&gt; let double x = x * x
-&gt; take 10 $ map double integers
-&gt; 
-</code></pre>
+<p>Lists are always homogeneous.</p>
+<p>Variables are camelCase.</p>
+<pre><code>&gt; [1, 3, 4, 5] == (1:3:4:[5])                  -- True
+&gt; [2,4..10]                                    -- Even numbers from 2 to 10
+&gt; let smallCaps = [&#39;a&#39;..&#39;z&#39;]                   -- Characters
+&gt; head smallCaps : tail smallCaps == smallCaps -- True
+&gt; let integers = [1..]                         -- infinite lists
+&gt; let fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+&gt; let square x = x * x
+&gt; take 5 $ drop 100 $ map square $ filter (not . even) integers
+&gt; [ y : show x | x &lt;- [1..5], y &lt;- smallCaps, even x ]
+&gt; foldl&#39; (+) 0 [2,4..10]
+&gt; foldl&#39; (++) &quot;&quot; [&quot;Hello&quot;, &quot; &quot;, &quot;World&quot;]
+&gt; concat [&quot;Hello&quot;, &quot; &quot;, &quot;World&quot;]
+&gt; concatMap show [10..20]</code></pre>
 </section><section id="pattern-matching" class="slide level2">
 <h1>Pattern Matching</h1>
-<pre><code>&gt; length :: [a] -&gt; Integer
-&gt; length []     =  0
-&gt; length (x:xs) =  1 + length xs</code></pre>
+<p>Multi-line definitions are cumbersome in ghci.</p>
+<p>Type in <code>Scratch.hs</code> instead and reload.</p>
+<pre><code>&gt; len :: [a] -&gt; Integer              -- our own recursive length function.
+&gt; len []     =  0
+&gt; len (x:xs) =  1 + length xs
+&gt;
+&gt; interl [] [] = []
+&gt; interl (x:xs) (y:ys) = x : y : interl xs ys
+&gt;
+&gt; isA &quot;A&quot; = True
+&gt; isA _   = False
+&gt;</code></pre>
 </section><section id="conditionals" class="slide level2">
 <h1>Conditionals</h1>
-<pre><code>&gt; if null [] then &quot;nothing&quot; else &quot;something&quot;</code></pre>
-</section><section id="types" class="slide level2">
-<h1>Types</h1>
-<pre><code>&gt; data User = User Int String
-&gt; data User = User { userAge :: Int, userName :: &quot;mikkel&quot; }</code></pre>
+<pre><code>&gt; if null [] then &quot;nothing&quot; else &quot;something&quot;  -- predicate (null [] == True)
+&gt;
+&gt; null xs | xs == []  = True    -- using a guard in fn definition
+&gt; null xs | otherwise = False   -- could have pattern matched directly on []
+
+&gt; null = cond xs of
+&gt;         [] -&gt; True
+&gt;         _  -&gt; False</code></pre>
+</section><section id="types-and-typeclasses" class="slide level2">
+<h1>Types and Typeclasses</h1>
+<p>Always starts with a capital letter.</p>
+<p>Type has a constructor typically named same as type.</p>
+<pre><code>&gt; type Years = Int
+
+&gt; newtype Name = Name { unName :: String }
+
+&gt; data User = User Years Name
+&gt; data User2 = User2 { userAge :: Years, userName :: Name } -- record syntax
+
+&gt; let mikkel = User 36 (Name &quot;Mikkel&quot;)
+&gt; let mikkel2 = User2 36 (Name &quot;Mikkel&quot;)
+&gt; let mikkel3 = User2 { userAge = 36, userName = (Name &quot;Mikkel&quot;)}
+
+&gt; data colors = Red | Blue | Green                       -- a sum type
+&gt; data Request = GET String | PUT String | POST String deriving (Show, Eq)
+
+&gt; instance Show User where
+&gt;   show (User age name) = unName name ++ &quot; is &quot; ++ show age ++ &quot; old.&quot;
+</code></pre>
+<p>Type classes is for sharing an interface between types.</p>
+<p>Can generally be derived. Most common Show, Read, Eq, Ord, Bounded.</p>
+</section><section id="side-effects" class="slide level2">
+<h1>Side Effects</h1>
+<p>Only happens in the IO Monad. Once impure you can never be pure again.</p>
+<p>Think of it as a special type that you wrap and unwrap.</p>
+<pre><code>&gt; main :: IO ()
+&gt; main = do                -- Do syntax for sequencing side effects.
+&gt;  print &quot;Hello World&quot;     -- Always from top to bottom.
+&gt;  print &quot;Good Morning!&quot;
+&gt;  return ()               -- Return &#39;exits&#39; the Monad.
+
+&gt; main2 = print &quot;Hello World&quot;
+
+&gt; main3 :: IO Int
+&gt; main3 = return 4</code></pre>
 </section></section>
     </div>
   </div>
