@@ -13,7 +13,7 @@ To teach enough for you to start a project in Haskell.
 - Get Started with the Project
 - Cover the essential Haskell Tools
 - Teach the basic syntax and elements of the Haskell language
-- Show resources for further study
+- Point to learning resources
 
 
 ## Approach
@@ -71,6 +71,10 @@ $ cabal run
 
 Cabal is a build manager that handles library dependencies.
 
+Dependencies are fetched from [Hackage](http://hackage.haskell.org).
+
+Use Hackage to browse reference documentation and find libraries.
+
 Our project is defined in `intro.cabal`.
 
 Let's have a look...
@@ -92,6 +96,9 @@ like this:
 $ cabal repl
 
 ```
+
+The [Prelude](http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html)?
+
 
 ## GHCi Commands
 
@@ -181,15 +188,15 @@ Type in `Scratch.hs` instead and reload.
 ```
 > if null [] then "nothing" else "something"  -- predicate (null [] == True)
 >
-> null xs | xs == []  = True    -- using a guard in fn definition
-> null xs | otherwise = False   -- could have pattern matched directly on []
+> null xs | xs == []  = True  -- using a guard in fn definition
+> null xs | otherwise = False -- could have pattern matched directly on []
 
 > null = cond xs of
 >         [] -> True
 >         _  -> False
 ```
 
-## Types and Typeclasses
+## Types
 
 Always starts with a capital letter.
 
@@ -201,7 +208,7 @@ Type has a constructor typically named same as type.
 > newtype Name = Name { unName :: String }
 
 > data User = User Years Name
-> data User2 = User2 { userAge :: Years, userName :: Name } -- record syntax
+> data User2 = User2 { userAge :: Years, userName :: Name } -- record
 
 > let mikkel = User 36 (Name "Mikkel")
 > let mikkel2 = User2 36 (Name "Mikkel")
@@ -219,9 +226,33 @@ Type classes is for sharing an interface between types.
 
 Can generally be derived. Most common Show, Read, Eq, Ord, Bounded.
 
+## Maybe and Either
+
+In the Prelude in modules: Data.Maybe and Data.Either.
+
+Often used with fmap, (<$>), and (*) from Control.Applicative.
+
+```
+> data Maybe a = Nothing | Just a
+>
+> (+1) <$> Just 3                -- Just 4
+> fmap (+1) Just 3               -- Just 4
+> (+)  <$> Just 4 <*> Just 5     -- Just 9
+> (++) <$> Just 3 <*> Nothing    -- Nothing
+>
+> data Either a b = Left a | Right b
+>
+> (++) <$> Right "Hello " <*> Right "World"  -- Right "Hello World"
+> (+1) <$> Left 4                            -- Left 4
+> (+1) <$> Right 4                           -- Right 5
+> (+)  <$> Left "Not a number" <*> Right 3   -- Left "Not a number"
+
+```
+
 ## Side Effects
 
-Only happens in the IO Monad. Once impure you can never be pure again.
+Side effects only happens in the IO Monad. Once impure you can never
+be pure again.
 
 Think of it as a special type that you wrap and unwrap.
 
@@ -237,3 +268,51 @@ Think of it as a special type that you wrap and unwrap.
 > main3 :: IO Int
 > main3 = return 4
 ```
+
+# Return to the Intro Project
+
+## The Modules
+
+- Types.hs -- Definition of Project Types
+- Pages.hs -- Some html pages
+- Store.hs -- A basic data store based on STM and Data.IntMap
+- Intro.hs -- Route definitions
+
+
+## Create an Address Book
+
+- Create an "addressbook" route in Intro.hs
+- Create a static page for route in Pages.hs
+- Create a Person type in Types.hs
+- Create some static entries in Store.hs (don't use STM yet.)
+- List the entries on the addressbook page.
+- Store the entries in a (Map Name Person)
+- Create routes for "adressbook/:name"
+- Add ability to add, remove, search, addresses.
+- ...
+
+# Learning Resources
+
+## Learn You a Haskell for Great Good!
+
+Basic introduction. The place where most people start.
+
+Book can be read for free online or bought in hardcopy.
+
+[Learn You a Haskell for Great Good!](http://learnyouahaskell.com/)
+
+
+## Real World Haskell
+
+Practical examples of fairly large applications in Haskell.
+
+Book can be read for free online or bought in hardcopy.
+
+[Real World Haskell](http://book.realworldhaskell.org/)
+
+
+## Reddit
+
+Very active community on Reddit.
+
+[Haskell Subreddit](https://www.reddit.com/r/haskell)

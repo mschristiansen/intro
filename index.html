@@ -45,7 +45,7 @@
 <li>Get Started with the Project</li>
 <li>Cover the essential Haskell Tools</li>
 <li>Teach the basic syntax and elements of the Haskell language</li>
-<li>Show resources for further study</li>
+<li>Point to learning resources</li>
 </ul>
 </section>
 <section id="approach" class="slide level2">
@@ -87,6 +87,8 @@ $ cabal run</code></pre>
 <section><section id="haskell-tools" class="titleslide slide level1"><h1>Haskell Tools</h1></section><section id="using-cabal" class="slide level2">
 <h1>Using Cabal</h1>
 <p>Cabal is a build manager that handles library dependencies.</p>
+<p>Dependencies are fetched from <a href="http://hackage.haskell.org">Hackage</a>.</p>
+<p>Use Hackage to browse reference documentation and find libraries.</p>
 <p>Our project is defined in <code>intro.cabal</code>.</p>
 <p>Let's have a look...</p>
 </section><section id="using-ghci" class="slide level2">
@@ -98,6 +100,7 @@ Prelude&gt; _</code></pre>
 <p>In a project you can import all the project dependencies if you do it like this:</p>
 <pre><code>$ cabal repl
 </code></pre>
+<p>The <a href="http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html">Prelude</a>?</p>
 </section><section id="ghci-commands" class="slide level2">
 <h1>GHCi Commands</h1>
 <p>GHCi will try to evaluate expressions not starting with colon.</p>
@@ -165,14 +168,14 @@ Prelude&gt; _</code></pre>
 <h1>Conditionals</h1>
 <pre><code>&gt; if null [] then &quot;nothing&quot; else &quot;something&quot;  -- predicate (null [] == True)
 &gt;
-&gt; null xs | xs == []  = True    -- using a guard in fn definition
-&gt; null xs | otherwise = False   -- could have pattern matched directly on []
+&gt; null xs | xs == []  = True  -- using a guard in fn definition
+&gt; null xs | otherwise = False -- could have pattern matched directly on []
 
 &gt; null = cond xs of
 &gt;         [] -&gt; True
 &gt;         _  -&gt; False</code></pre>
-</section><section id="types-and-typeclasses" class="slide level2">
-<h1>Types and Typeclasses</h1>
+</section><section id="types" class="slide level2">
+<h1>Types</h1>
 <p>Always starts with a capital letter.</p>
 <p>Type has a constructor typically named same as type.</p>
 <pre><code>&gt; type Years = Int
@@ -180,7 +183,7 @@ Prelude&gt; _</code></pre>
 &gt; newtype Name = Name { unName :: String }
 
 &gt; data User = User Years Name
-&gt; data User2 = User2 { userAge :: Years, userName :: Name } -- record syntax
+&gt; data User2 = User2 { userAge :: Years, userName :: Name } -- record
 
 &gt; let mikkel = User 36 (Name &quot;Mikkel&quot;)
 &gt; let mikkel2 = User2 36 (Name &quot;Mikkel&quot;)
@@ -194,9 +197,27 @@ Prelude&gt; _</code></pre>
 </code></pre>
 <p>Type classes is for sharing an interface between types.</p>
 <p>Can generally be derived. Most common Show, Read, Eq, Ord, Bounded.</p>
+</section><section id="maybe-and-either" class="slide level2">
+<h1>Maybe and Either</h1>
+<p>In the Prelude in modules: Data.Maybe and Data.Either.</p>
+<p>Often used with fmap, (&lt;$&gt;), and (*) from Control.Applicative.</p>
+<pre><code>&gt; data Maybe a = Nothing | Just a
+&gt;
+&gt; (+1) &lt;$&gt; Just 3                -- Just 4
+&gt; fmap (+1) Just 3               -- Just 4
+&gt; (+)  &lt;$&gt; Just 4 &lt;*&gt; Just 5     -- Just 9
+&gt; (++) &lt;$&gt; Just 3 &lt;*&gt; Nothing    -- Nothing
+&gt;
+&gt; data Either a b = Left a | Right b
+&gt;
+&gt; (++) &lt;$&gt; Right &quot;Hello &quot; &lt;*&gt; Right &quot;World&quot;  -- Right &quot;Hello World&quot;
+&gt; (+1) &lt;$&gt; Left 4                            -- Left 4
+&gt; (+1) &lt;$&gt; Right 4                           -- Right 5
+&gt; (+)  &lt;$&gt; Left &quot;Not a number&quot; &lt;*&gt; Right 3   -- Left &quot;Not a number&quot;
+</code></pre>
 </section><section id="side-effects" class="slide level2">
 <h1>Side Effects</h1>
-<p>Only happens in the IO Monad. Once impure you can never be pure again.</p>
+<p>Side effects only happens in the IO Monad. Once impure you can never be pure again.</p>
 <p>Think of it as a special type that you wrap and unwrap.</p>
 <pre><code>&gt; main :: IO ()
 &gt; main = do                -- Do syntax for sequencing side effects.
@@ -208,6 +229,43 @@ Prelude&gt; _</code></pre>
 
 &gt; main3 :: IO Int
 &gt; main3 = return 4</code></pre>
+</section></section>
+<section><section id="return-to-the-intro-project" class="titleslide slide level1"><h1>Return to the Intro Project</h1></section><section id="the-modules" class="slide level2">
+<h1>The Modules</h1>
+<ul>
+<li>Types.hs -- Definition of Project Types</li>
+<li>Pages.hs -- Some html pages</li>
+<li>Store.hs -- A basic data store based on STM and Data.IntMap</li>
+<li>Intro.hs -- Route definitions</li>
+</ul>
+</section><section id="create-an-address-book" class="slide level2">
+<h1>Create an Address Book</h1>
+<ul>
+<li>Create an &quot;addressbook&quot; route in Intro.hs</li>
+<li>Create a static page for route in Pages.hs</li>
+<li>Create a Person type in Types.hs</li>
+<li>Create some static entries in Store.hs (don't use STM yet.)</li>
+<li>List the entries on the addressbook page.</li>
+<li>Store the entries in a (Map Name Person)</li>
+<li>Create routes for &quot;adressbook/:name&quot;</li>
+<li>Add ability to add, remove, search, addresses.</li>
+<li>...</li>
+</ul>
+</section></section>
+<section><section id="learning-resources" class="titleslide slide level1"><h1>Learning Resources</h1></section><section id="learn-you-a-haskell-for-great-good" class="slide level2">
+<h1>Learn You a Haskell for Great Good!</h1>
+<p>Basic introduction. The place where most people start.</p>
+<p>Book can be read for free online or bought in hardcopy.</p>
+<p><a href="http://learnyouahaskell.com/">Learn You a Haskell for Great Good!</a></p>
+</section><section id="real-world-haskell" class="slide level2">
+<h1>Real World Haskell</h1>
+<p>Practical examples of fairly large applications in Haskell.</p>
+<p>Book can be read for free online or bought in hardcopy.</p>
+<p><a href="http://book.realworldhaskell.org/">Real World Haskell</a></p>
+</section><section id="reddit" class="slide level2">
+<h1>Reddit</h1>
+<p>Very active community on Reddit.</p>
+<p><a href="https://www.reddit.com/r/haskell">Haskell Subreddit</a></p>
 </section></section>
     </div>
   </div>
