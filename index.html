@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Mikkel Christiansen" />
+  <title>Introduction to Haskell</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Introduction to Haskell</h1>
+    <h2 class="author">Mikkel Christiansen</h2>
+    <h3 class="date">House4Hack, August 2015</h3>
+</section>
+
+<section id="objectives" class="slide level2">
+<h1>Objectives</h1>
+<p>To teach enough for you to start a project in Haskell.</p>
+</section>
+<section id="agenda" class="slide level2">
+<h1>Agenda</h1>
+<ul>
+<li>Get Started with the Project</li>
+<li>Cover the essential Haskell Tools</li>
+<li>Teach the basic syntax and elements of the Haskell language</li>
+<li>Show resources for further study</li>
+</ul>
+</section>
+<section id="approach" class="slide level2">
+<h1>Approach</h1>
+<ul>
+<li>Ask questions any time</li>
+<li>Test code and look up documentation as we go</li>
+<li>Break and fix the project</li>
+<li>Let ghc be your teacher!</li>
+</ul>
+</section>
+<section><section id="get-started-with-the-project" class="titleslide slide level1"><h1>Get Started with the Project</h1></section><section id="the-intro-project" class="slide level2">
+<h1>The Intro Project</h1>
+<p>A small web service.</p>
+<ul>
+<li>Displays html pages</li>
+<li>Has JSON API</li>
+<li>In-memory store for (x,y) points</li>
+<li>Can do some aggregation on points</li>
+</ul>
+</section><section id="install-tools" class="slide level2">
+<h1>Install Tools</h1>
+<p>Get compiler: ghc Get build manager: cabal (cabal-install)</p>
+<p>On Debian/Ubuntu it can be done with: <code>apt-get install git ghc cabal-install</code></p>
+</section><section id="download-project" class="slide level2">
+<h1>Download Project</h1>
+<p>Clone repository and tell <code>cabal</code> to start fetching dependencies.</p>
+<pre><code>$ git clone git@github.com:mschristiansen/intro.git
+$ cd intro
+$ cabal sandbox init
+$ cabal install --dependencies-only --enable-tests</code></pre>
+</section></section>
+<section><section id="haskell-tools" class="titleslide slide level1"><h1>Haskell Tools</h1></section><section id="using-cabal" class="slide level2">
+<h1>Using Cabal</h1>
+<p>Cabal is a build manager that handles library dependencies.</p>
+<p>Our project is defined in <code>intro.cabal</code>.</p>
+</section><section id="using-ghci" class="slide level2">
+<h1>Using GHCi</h1>
+<p>You can start an interactive prompt (aka. REPL, READ-EVAL-PRINT-LOOP). It has tab completion and can be used to evaluate expressions and find types.</p>
+<pre><code>$ ghci
+</code></pre>
+<p>In a project you can do it like this:</p>
+<pre><code>$ cabal repl
+</code></pre>
+</section></section>
+<section><section id="syntax" class="titleslide slide level1"><h1>Syntax</h1></section><section id="basic-syntax" class="slide level2">
+<h1>Basic Syntax</h1>
+<pre><code>&gt; &quot;Hello World&quot;
+&gt; print &quot;Hello World!&quot;
+&gt; length &quot;Hello World&quot;
+&gt; let hello = &quot;Hello World&quot; in print hello
+&gt; 1 + 3 * 3
+&gt; (1 + 3) * 3
+&gt; 1 + 3 $ * 4
+&gt; (+) 1 3
+&gt; (+ 1) 3
+</code></pre>
+</section><section id="list-syntax" class="slide level2">
+<h1>List Syntax</h1>
+<pre><code>&gt; [1, 3, 4, 5]
+&gt; [1..10]
+&gt; let integers = [1..]
+&gt; take 10 integers
+&gt; let double x = x * x
+&gt; take 10 $ map double integers
+&gt; 
+</code></pre>
+</section></section>
+<section><section id="syntax-1" class="titleslide slide level1"><h1>Syntax</h1></section><section id="list" class="slide level2">
+<h1>List</h1>
+<p>ar</p>
+</section></section>
+    </div>
+  </div>
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.min.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+    </body>
+</html>
