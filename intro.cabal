@@ -21,7 +21,7 @@ library
                      , Store
                      , Types
   build-depends:       aeson
-                     , base >=4.8 && <4.9
+                     , base >=4.7 && <4.9
                      , blaze-html
                      , containers
                      , random

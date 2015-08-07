@@ -3,6 +3,7 @@
 -- Some examples here:
 -- http://book.realworldhaskell.org/read/software-transactional-memory.html
 
+{-# LANGUAGE CPP #-}
 module Store
   ( storeInit
   , storeInsert
@@ -17,6 +18,9 @@ import Prelude hiding (lookup)
 import Control.Concurrent.STM
 import Data.IntMap (empty, insert, lookup, toAscList, foldl')
 import Types
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative ((<$>))
+#endif
 
 storeInit :: IO (TVar Collection)
 storeInit = atomically $ newTVar empty
