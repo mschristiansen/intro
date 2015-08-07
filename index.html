@@ -65,6 +65,7 @@
 <li>Has JSON API</li>
 <li>In-memory store for (x,y) points</li>
 <li>Can do some aggregation on points</li>
+<li>Lots of room for improvements!</li>
 </ul>
 </section><section id="install-tools" class="slide level2">
 <h1>Install Tools</h1>
@@ -77,11 +78,15 @@
 $ cd intro
 $ cabal sandbox init
 $ cabal install --dependencies-only --enable-tests</code></pre>
+</section><section id="project-structure" class="slide level2">
+<h1>Project Structure</h1>
 </section></section>
 <section><section id="haskell-tools" class="titleslide slide level1"><h1>Haskell Tools</h1></section><section id="using-cabal" class="slide level2">
 <h1>Using Cabal</h1>
 <p>Cabal is a build manager that handles library dependencies.</p>
 <p>Our project is defined in <code>intro.cabal</code>.</p>
+</section><section id="intro.cabal" class="slide level2">
+<h1>intro.cabal</h1>
 </section><section id="using-ghci" class="slide level2">
 <h1>Using GHCi</h1>
 <p>You can start an interactive prompt (aka. REPL, READ-EVAL-PRINT-LOOP). It has tab completion and can be used to evaluate expressions and find types.</p>
@@ -90,6 +95,8 @@ $ cabal install --dependencies-only --enable-tests</code></pre>
 <p>In a project you can do it like this:</p>
 <pre><code>$ cabal repl
 </code></pre>
+</section><section id="ghci-commands" class="slide level2">
+<h1>GHCi Commands</h1>
 </section></section>
 <section><section id="syntax" class="titleslide slide level1"><h1>Syntax</h1></section><section id="basic-syntax" class="slide level2">
 <h1>Basic Syntax</h1>
@@ -113,10 +120,18 @@ $ cabal install --dependencies-only --enable-tests</code></pre>
 &gt; take 10 $ map double integers
 &gt; 
 </code></pre>
-</section></section>
-<section><section id="syntax-1" class="titleslide slide level1"><h1>Syntax</h1></section><section id="list" class="slide level2">
-<h1>List</h1>
-<p>ar</p>
+</section><section id="pattern-matching" class="slide level2">
+<h1>Pattern Matching</h1>
+<pre><code>&gt; length :: [a] -&gt; Integer
+&gt; length []     =  0
+&gt; length (x:xs) =  1 + length xs</code></pre>
+</section><section id="conditionals" class="slide level2">
+<h1>Conditionals</h1>
+<pre><code>&gt; if null [] then &quot;nothing&quot; else &quot;something&quot;</code></pre>
+</section><section id="types" class="slide level2">
+<h1>Types</h1>
+<pre><code>&gt; data User = User Int String
+&gt; data User = User { userAge :: Int, userName :: &quot;mikkel&quot; }</code></pre>
 </section></section>
     </div>
   </div>
