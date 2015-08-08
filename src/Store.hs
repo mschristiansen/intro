@@ -15,15 +15,15 @@ module Store
   ) where
 
 import Prelude hiding (lookup)
-import Control.Concurrent.STM
+import Data.IORef
 import Data.IntMap (empty, insert, lookup, toAscList, foldl')
 import Types
 #if __GLASGOW_HASKELL__ < 710
 import Control.Applicative ((<$>))
 #endif
 
-storeInit :: IO (TVar Collection)
-storeInit = atomically $ newTVar empty
+storeInit :: IO (IORef Collection)
+storeInit = newIORef empty
 
 
 -- Basic Operations
@@ -31,27 +31,24 @@ storeInit = atomically $ newTVar empty
 insertPoint :: Point -> Collection -> Collection
 insertPoint (Point x y) coll = insert x y coll
 
-storeInsert :: Point -> TVar Collection -> IO ()
-storeInsert p coll = atomically $ do
-  c <- readTVar coll
-  writeTVar coll $ insertPoint p c
+storeInsert :: Point -> IORef Collection -> IO ()
+storeInsert p coll = readIORef coll >>= (writeIORef coll) . insertPoint p
 
-
-storeAction :: (a -> b) -> TVar a -> IO b
-storeAction action coll = atomically $ action <$> readTVar coll
+storeAction :: (a -> b) -> IORef a -> IO b
+storeAction action coll = action <$> readIORef coll
 
 
 lookupPointY :: Int -> Collection -> Maybe Int
 lookupPointY = lookup
 
-storeLookup :: Int -> TVar Collection -> IO (Maybe Int)
+storeLookup :: Int -> IORef Collection -> IO (Maybe Int)
 storeLookup = storeAction . lookupPointY
 
 
 listPoints :: Collection -> [Point]
 listPoints coll = map (uncurry Point) (toAscList coll)
 
-storeList :: TVar Collection -> IO [Point]
+storeList :: IORef Collection -> IO [Point]
 storeList = storeAction listPoints
 
 
@@ -64,17 +61,17 @@ aggregatePoints op = foldl' op 0
 sumPoints :: Collection -> Int
 sumPoints = aggregatePoints (+)
 
-storeSum :: TVar Collection -> IO Int
+storeSum :: IORef Collection -> IO Int
 storeSum = storeAction sumPoints
 
 countPoints :: Collection -> Int
 countPoints = aggregatePoints (\acc _ -> acc + 1)
 
-storeCount :: TVar Collection -> IO Int
+storeCount :: IORef Collection -> IO Int
 storeCount  = storeAction countPoints
 
 avgPoints :: Collection -> Int
 avgPoints coll = sumPoints coll `div` countPoints coll
 
-storeAvg :: TVar Collection -> IO Int
+storeAvg :: IORef Collection -> IO Int
 storeAvg = storeAction avgPoints
