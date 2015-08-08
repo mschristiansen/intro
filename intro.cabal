@@ -33,7 +33,7 @@ library
   default-language:    Haskell2010
 
 executable intro
-  main-is:             intro.hs
+  main-is:             Main.hs
   build-depends:       base
                      , intro
   default-language:    Haskell2010
