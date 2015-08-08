@@ -32,7 +32,7 @@ insertPoint :: Point -> Collection -> Collection
 insertPoint (Point x y) coll = insert x y coll
 
 storeInsert :: Point -> IORef Collection -> IO ()
-storeInsert p coll = readIORef coll >>= (writeIORef coll) . insertPoint p
+storeInsert p coll = modifyIORef coll $ insertPoint p
 
 storeAction :: (a -> b) -> IORef a -> IO b
 storeAction action coll = action <$> readIORef coll
