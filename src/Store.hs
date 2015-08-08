@@ -29,7 +29,7 @@ storeInit = newIORef empty
 -- Basic Operations
 
 insertPoint :: Point -> Collection -> Collection
-insertPoint (Point x y) coll = insert x y coll
+insertPoint (Point x y) = insert x y
 
 storeInsert :: Point -> IORef Collection -> IO ()
 storeInsert p coll = modifyIORef coll $ insertPoint p
