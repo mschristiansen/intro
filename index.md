@@ -292,7 +292,7 @@ Think of it as a special type that you wrap and unwrap.
 - Store the entries in a (Map Name Person)
 - Create routes for "adressbook/:name"
 - Add ability to add, remove, search, addresses.
-- ...
+
 
 # Learning Resources
 
@@ -312,6 +312,14 @@ Practical examples of fairly large applications in Haskell.
 Book can be read for free online or bought in hardcopy.
 
 [Real World Haskell](http://book.realworldhaskell.org/)
+
+
+## Lambda Luminaries Meetup
+
+Active functional programming community that meet once a
+month. Generally at [house4hack](http://www.house4hack.co.za/).
+
+[Lambda Luminaries](http://www.meetup.com/lambda-luminaries/)
 
 
 ## Reddit
