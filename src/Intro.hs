@@ -29,18 +29,18 @@ startServer = do
     -- Insert `:count` random numbers into the store.
     get "/store/insert/random/:count" $ do
       i <- param "count"
-      g <- liftIO $ getStdGen
+      g <- liftIO getStdGen
       let points = take i $ zipWith Point [1..] (randomRs (1,100) g)
-      liftIO $ mapM_ (flip storeInsert coll) points
+      liftIO $ mapM_ (`storeInsert` coll) points
       html $ showColl points
 
     -- Aggregation functions
-    get "/store/sum" $ (liftIO $ storeSum coll) >>= (html . showResult)
-    get "/store/count" $ (liftIO $ storeCount coll) >>= (html . showResult)
-    get "/store/average" $ (liftIO $ storeAvg coll) >>= (html . showResult)
+    get "/store/sum" $ liftIO (storeSum coll) >>= html . showResult
+    get "/store/count" $ liftIO (storeCount coll) >>= html . showResult
+    get "/store/average" $ liftIO (storeAvg coll) >>= html . showResult
 
     -- JSON API
-    get "/api/list" $ (liftIO $ storeList coll) >>= json
+    get "/api/list" $ liftIO (storeList coll) >>= json
     put "/api/insert" $ do
       point <- jsonData
       liftIO $ storeInsert point coll

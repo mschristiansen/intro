@@ -18,7 +18,7 @@ import Control.Monad
 wrapHtml :: H.Html -> H.Html -> Text
 wrapHtml ptitle pbody = renderHtml $ docTypeHtml $ do
   H.head $ H.title ptitle
-  H.body $ pbody
+  H.body pbody
 
 home :: Text
 home = wrapHtml "Introduction to Haskell" $ do
@@ -40,11 +40,11 @@ showColl :: [Point] -> Text
 showColl points = wrapHtml "Collection" $ do
   h1 "Collection List"
   table $ do
-    thead $ do
+    thead $
       tr $ do
         th "X"
         th "Y"
-    tbody $ forM_ points $ \point -> do
+    tbody $ forM_ points $ \point ->
       tr $ do
         td $ toHtml $ pointX point
         td $ toHtml $ pointY point
