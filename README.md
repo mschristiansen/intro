@@ -2,7 +2,10 @@ Intro
 =====
 
 A set of modules used to teach Haskell development. Can be installed
-with either `stack` or `cabal`.
+with either `stack` or `cabal` by following instructions below.
+
+Slides are available [here](http://mschristiansen.github.io/intro).
+
 
 Instructions for Stack
 ----------------------
@@ -13,6 +16,7 @@ Install `stack` by following these
 1. Clone this repository: `git clone git://github.com/mschristiansen/intro`
 2. Install GHC: `stack setup`
 3. Compile and run: `stack exec intro`
+
 
 Instructions for Using Cabal
 ----------------------------
